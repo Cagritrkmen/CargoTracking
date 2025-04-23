@@ -1,5 +1,16 @@
 const Package = require("../models/Package");
 
+
+
+const getAllPackages = async (req, res) => {
+  try {
+    const packages = await Package.find();
+    res.json(packages);
+  } catch (err) {
+    res.status(500).json({ message: "Kargolar getirilemedi" });
+  }
+};
+
 // 🔍 Sorgu
 const getPackageByTrackingNumber = async (req, res) => {
   try {
@@ -82,5 +93,6 @@ module.exports = {
   createPackage,
   getPackageByTrackingNumber,
   updatePackageByTrackingNumber,
-  deletePackageByTrackingNumber
+  deletePackageByTrackingNumber,
+  getAllPackages,
 };

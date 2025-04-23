@@ -4,7 +4,8 @@ const {
   createPackage,
   getPackageByTrackingNumber,
   updatePackageByTrackingNumber,
-  deletePackageByTrackingNumber
+  deletePackageByTrackingNumber,
+  getAllPackages, 
 } = require("../controllers/packageController");
 
 const verifyToken = require("../middleware/authMiddleware");
@@ -20,5 +21,7 @@ router.put("/track/:trackingNumber", verifyToken, updatePackageByTrackingNumber)
 
 // ❌ Takip numarası ile silme (token korumalı)
 router.delete("/track/:trackingNumber", verifyToken, deletePackageByTrackingNumber);
+
+router.get("/", verifyToken, getAllPackages);
 
 module.exports = router;

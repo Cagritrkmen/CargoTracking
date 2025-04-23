@@ -1,22 +1,35 @@
 import { useEffect, useState } from "react";
 import { getAllPackages } from "../api/packageApi";
+import EditModal from "./EditModal";
 
 const AdminDashboard = () => {
   const [packages, setPackages] = useState([]);
   const [error, setError] = useState("");
+  const [selectedPackage, setSelectedPackage] = useState(null); // 👈 seçilen paket
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const fetchPackages = async () => {
+    try {
+      const data = await getAllPackages();
+      setPackages(data);
+    } catch (err) {
+      setError("Kargolar getirilemedi: " + err.message);
+    }
+  };
 
   useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const data = await getAllPackages();
-        setPackages(data);
-      } catch (err) {
-        setError("Kargolar getirilemedi: " + err.message);
-      }
-    };
-
     fetchPackages();
   }, []);
+
+  const handleEditClick = (pkg) => {
+    setSelectedPackage(pkg);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedPackage(null);
+  };
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -30,12 +43,25 @@ const AdminDashboard = () => {
             <p><strong>Takip No:</strong> {pkg.trackingNumber}</p>
             <p><strong>Konum:</strong> {pkg.currentLocation}</p>
             <p><strong>Durum:</strong> {pkg.status}</p>
-            <button className="mt-2 bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">
+            <button
+              onClick={() => handleEditClick(pkg)}
+              className="mt-2 bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+            >
               Düzenle
             </button>
           </div>
         ))}
       </div>
+
+      {/* Modal'ı göster */}
+      {selectedPackage && (
+        <EditModal
+          isOpen={isModalOpen}
+          onClose={handleModalClose}
+          pkg={selectedPackage}
+          onUpdated={fetchPackages} // güncelleme sonrası yeniden yükle
+        />
+      )}
     </div>
   );
 };

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { updatePackage } from "../api/packageApi";
 import TurkeyMap from "./TurkeyMap";
 import toast from "react-hot-toast";
+import { Chip, Tooltip } from "@mui/material";
+import { statusOptions } from "../utils/statusOptions";
 
 const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
     const [currentLocation, setCurrentLocation] = useState(pkg.currentLocation);
@@ -96,7 +98,15 @@ const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
                                     pkg.history.slice().reverse().map((h, i) => (
                                         <div key={i} className="border-b pb-1 mb-1">
                                             <p><strong>Konum:</strong> {h.location}</p>
-                                            <p><strong>Durum:</strong> {h.status}</p>
+                                            <Tooltip title={statusOptions[h.status]?.description}>
+                                                <Chip
+                                                    label={`${statusOptions[h.status]?.icon || ""} ${h.status}`}
+                                                    color={statusOptions[h.status]?.color || "default"}
+                                                    size="small"
+                                                    variant="filled"
+                                                />
+                                            </Tooltip>
+
                                             <p><strong>Tarih:</strong> {new Date(h.date).toLocaleString("tr-TR")}</p>
                                         </div>
                                     ))

@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { getAllPackages } from "../api/packageApi";
 import EditModal from "./EditModal";
+import { statusOptions } from "../utils/statusOptions";
+import StatusChart from "./StatusChart";
+import GeneralStats from "./GeneralStats";
+
+
 
 // MUI bileşenleri
 import {
+  Chip,
   Box,
   TextField,
   MenuItem,
@@ -15,6 +21,7 @@ import {
   Button,
   Card,
   CardContent,
+  Tooltip,
 } from "@mui/material";
 
 const AdminDashboard = () => {
@@ -83,6 +90,9 @@ const AdminDashboard = () => {
       </Typography>
 
       {error && <Typography color="error">{error}</Typography>}
+      {packages.length > 0 && <GeneralStats packages={packages} />}
+      <StatusChart packages={packages} />
+
 
       {/* Filtre UI */}
       <Grid container spacing={2} sx={{ mb: 4 }}>
@@ -140,7 +150,15 @@ const AdminDashboard = () => {
               <CardContent>
                 <Typography variant="h6">{pkg.trackingNumber}</Typography>
                 <Typography>Konum: {pkg.currentLocation}</Typography>
-                <Typography>Durum: {pkg.status}</Typography>
+                <Tooltip title={statusOptions[pkg.status]?.description}>
+                  <Chip
+                    label={`${statusOptions[pkg.status]?.icon || ""} ${pkg.status}`}
+                    color={statusOptions[pkg.status]?.color || "default"}
+                    variant="filled"
+                  />
+                </Tooltip>
+
+
                 <Box mt={2}>
                   <Button
                     onClick={() => handleEditClick(pkg)}

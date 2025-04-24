@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { updatePackage } from "../api/packageApi";
 import TurkeyMap from "./TurkeyMap";
-
+import toast from "react-hot-toast";
 
 const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
     const [currentLocation, setCurrentLocation] = useState(pkg.currentLocation);
     const [status, setStatus] = useState(pkg.status);
+    const [sender, setSender] = useState(pkg.sender);
+    const [recipient, setRecipient] = useState(pkg.recipient);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -13,10 +15,17 @@ const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
         setError("");
         setLoading(true);
         try {
-            await updatePackage(pkg.trackingNumber, { currentLocation, status });
+            await updatePackage(pkg.trackingNumber, {
+                currentLocation,
+                status,
+                sender,
+                recipient,
+            });
+            toast.success("Kargo başarıyla güncellendi ✅");
             onUpdated(); // dashboard yeniden fetch yapacak
             onClose();
         } catch (err) {
+            toast.error("Güncelleme başarısız ❌");
             setError("Güncelleme başarısız: " + err.message);
         } finally {
             setLoading(false);
@@ -41,6 +50,28 @@ const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
                                 disabled
                                 className="w-full px-3 py-2 border rounded bg-gray-100"
                             />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-semibold">Gönderen</label>
+                                <input
+                                    type="text"
+                                    value={sender}
+                                    onChange={(e) => setSender(e.target.value)}
+                                    className="w-full px-3 py-2 border rounded"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-semibold">Alıcı</label>
+                                <input
+                                    type="text"
+                                    value={recipient}
+                                    onChange={(e) => setRecipient(e.target.value)}
+                                    className="w-full px-3 py-2 border rounded"
+                                />
+                            </div>
                         </div>
 
                         <div>
@@ -99,7 +130,6 @@ const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
             </div>
         </div>
     );
-
 };
 
 export default EditModal;

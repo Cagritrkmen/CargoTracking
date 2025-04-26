@@ -1,28 +1,17 @@
 import { useEffect, useState } from "react";
 import { getAllPackages } from "../api/packageApi";
 import EditModal from "./EditModal";
-import { statusOptions } from "../utils/statusOptions";
-import StatusChart from "./StatusChart";
 import GeneralStats from "./GeneralStats";
+import StatusChart from "./StatusChart";
+import CityBarChart from "./CityBarChart";
+import PackageFilters from "./PackageFilters";
+import { statusOptions } from "../utils/statusOptions";
+import WeeklyTrendChart from "./WeeklyTrendChart";
+import PackageCard from "./PackageCard";
 
 
-
-// MUI bileşenleri
-import {
-  Chip,
-  Box,
-  TextField,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  Typography,
-  Grid,
-  Button,
-  Card,
-  CardContent,
-  Tooltip,
-} from "@mui/material";
+// MUI
+import { Box, Typography, Grid, Card, CardContent, Chip, Tooltip, Button } from "@mui/material";
 
 const AdminDashboard = () => {
   const [packages, setPackages] = useState([]);
@@ -36,7 +25,7 @@ const AdminDashboard = () => {
   const [statusFilter, setStatusFilter] = useState("Tümü");
   const [cityFilter, setCityFilter] = useState("Tümü");
 
-  // Veri çekme
+  // Kargo verisi çekme
   const fetchPackages = async () => {
     try {
       const data = await getAllPackages();
@@ -50,7 +39,7 @@ const AdminDashboard = () => {
     fetchPackages();
   }, []);
 
-  // Filtreleme
+  // Filtreleme işlemi
   useEffect(() => {
     const result = packages.filter((pkg) => {
       const searchMatch =
@@ -90,91 +79,50 @@ const AdminDashboard = () => {
       </Typography>
 
       {error && <Typography color="error">{error}</Typography>}
-      {packages.length > 0 && <GeneralStats packages={packages} />}
-      <StatusChart packages={packages} />
+
+      {packages.length > 0 && (
+        <>
+          <GeneralStats packages={packages} />
+
+          {/* 3 grafik aynı satırda */}
+          <Grid container spacing={2} sx={{ mb: 4 }}>
+            <Grid item xs={12} md={4}>
+              <StatusChart packages={packages} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <CityBarChart packages={packages} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <WeeklyTrendChart packages={packages} />
+            </Grid>
+          </Grid>
+        </>
+      )}
 
 
-      {/* Filtre UI */}
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={4}>
-          <TextField
-            fullWidth
-            label="Takip No veya Alıcı"
-            variant="outlined"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </Grid>
 
-        <Grid item xs={6} md={4}>
-          <FormControl fullWidth>
-            <InputLabel>Durum</InputLabel>
-            <Select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              label="Durum"
-            >
-              <MenuItem value="Tümü">Tümü</MenuItem>
-              <MenuItem value="Hazırlanıyor">Hazırlanıyor</MenuItem>
-              <MenuItem value="Yola Çıktı">Yola Çıktı</MenuItem>
-              <MenuItem value="Dağıtımda">Dağıtımda</MenuItem>
-              <MenuItem value="Teslim Edildi">Teslim Edildi</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
+      {/* Filtreleme Alanı */}
+      <PackageFilters
+        search={search}
+        setSearch={setSearch}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        cityFilter={cityFilter}
+        setCityFilter={setCityFilter}
+        uniqueCities={uniqueCities}
+      />
 
-        <Grid item xs={6} md={4}>
-          <FormControl fullWidth>
-            <InputLabel>Şehir</InputLabel>
-            <Select
-              value={cityFilter}
-              onChange={(e) => setCityFilter(e.target.value)}
-              label="Şehir"
-            >
-              <MenuItem value="Tümü">Tümü</MenuItem>
-              {uniqueCities.map((city, idx) => (
-                <MenuItem key={idx} value={city}>
-                  {city}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-      </Grid>
-
-      {/* Kargo kartları */}
+      {/* Kargo Kartları */}
       <Grid container spacing={2}>
         {filteredPackages.map((pkg) => (
           <Grid item xs={12} md={6} lg={4} key={pkg._id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{pkg.trackingNumber}</Typography>
-                <Typography>Konum: {pkg.currentLocation}</Typography>
-                <Tooltip title={statusOptions[pkg.status]?.description}>
-                  <Chip
-                    label={`${statusOptions[pkg.status]?.icon || ""} ${pkg.status}`}
-                    color={statusOptions[pkg.status]?.color || "default"}
-                    variant="filled"
-                  />
-                </Tooltip>
-
-
-                <Box mt={2}>
-                  <Button
-                    onClick={() => handleEditClick(pkg)}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Düzenle
-                  </Button>
-                </Box>
-              </CardContent>
-            </Card>
+            <PackageCard pkg={pkg} onEdit={handleEditClick} />
           </Grid>
         ))}
       </Grid>
 
-      {/* Modal göster */}
+
+      {/* Modal */}
       {selectedPackage && (
         <EditModal
           isOpen={isModalOpen}

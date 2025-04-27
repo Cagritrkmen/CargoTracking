@@ -48,11 +48,12 @@ const GeneralStats = ({ packages }) => {
   return (
     <Box display="flex" flexWrap="wrap" gap={2} mb={4}>
       {stats.map((stat, index) => (
-        <Card
+        <Card 
           key={index}
           sx={{
-            flex: "1 1 180px",
-            maxWidth: "200px",
+            minWidth:"200px",
+            maxWidth:"300px",
+            flex:"1",
             backgroundColor: stat.bgColor,
             color: "#fff",
             display: "flex",

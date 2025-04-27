@@ -5,13 +5,12 @@ import GeneralStats from "./GeneralStats";
 import StatusChart from "./StatusChart";
 import CityBarChart from "./CityBarChart";
 import PackageFilters from "./PackageFilters";
-import { statusOptions } from "../utils/statusOptions";
 import WeeklyTrendChart from "./WeeklyTrendChart";
 import PackageCard from "./PackageCard";
-
+import AddPackageModal from "./AddPackageModal";
 
 // MUI
-import { Box, Typography, Grid, Card, CardContent, Chip, Tooltip, Button } from "@mui/material";
+import { Box, Typography, Grid, Card, Button } from "@mui/material";
 
 const AdminDashboard = () => {
   const [packages, setPackages] = useState([]);
@@ -19,6 +18,7 @@ const AdminDashboard = () => {
   const [error, setError] = useState("");
   const [selectedPackage, setSelectedPackage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // Filtre state'leri
   const [search, setSearch] = useState("");
@@ -39,7 +39,6 @@ const AdminDashboard = () => {
     fetchPackages();
   }, []);
 
-  // Filtreleme işlemi
   useEffect(() => {
     const result = packages.filter((pkg) => {
       const searchMatch =
@@ -58,7 +57,6 @@ const AdminDashboard = () => {
     setFilteredPackages(result);
   }, [search, statusFilter, cityFilter, packages]);
 
-  // Modal işlemleri
   const handleEditClick = (pkg) => {
     setSelectedPackage(pkg);
     setIsModalOpen(true);
@@ -69,66 +67,96 @@ const AdminDashboard = () => {
     setSelectedPackage(null);
   };
 
-  // Şehir listesi
   const uniqueCities = [...new Set(packages.map((p) => p.currentLocation))].filter(Boolean);
 
   return (
-    <Box className="bg-gray-100 min-h-screen px-6 py-8">
-      <Typography variant="h4" gutterBottom>
-        📦 Admin Panel - Kargolar
-      </Typography>
+    <Box className="max-w-7xl mx-auto p-4 space-y-8">
+      {/* Başlık ve Yeni Kargo Butonu */}
+      <Box className="flex justify-between items-center">
+        <Typography variant="h4" gutterBottom>
+          📦 Admin Panel - Kargolar
+        </Typography>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => setIsAddModalOpen(true)}
+        >
+          ➕ Yeni Kargo Ekle
+        </Button>
+      </Box>
 
+      {/* Hata mesajı */}
       {error && <Typography color="error">{error}</Typography>}
 
+      {/* Genel İstatistikler */}
       {packages.length > 0 && (
-        <>
-          <GeneralStats packages={packages} />
-
-          {/* 3 grafik aynı satırda */}
-          <Grid container spacing={2} sx={{ mb: 4 }}>
-            <Grid item xs={12} md={4}>
-              <StatusChart packages={packages} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <CityBarChart packages={packages} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <WeeklyTrendChart packages={packages} />
-            </Grid>
-          </Grid>
-        </>
+        <GeneralStats packages={packages} />
       )}
 
+      {/* Grafikler */}
+      <Box display="flex" justifyContent="space-between" gap={2} flexDirection={{ xs: "column", md: "row" }} >
+        <Box flex="1" minWidth={300}>
+          <StatusChart packages={packages} />
+        </Box>
+        <Box flex="1" minWidth={300}>
+          <CityBarChart packages={packages} />
+        </Box>
+        <Box flex="1" minWidth={300}>
+          <WeeklyTrendChart packages={packages} />
+        </Box>
+      </Box>
 
 
-      {/* Filtreleme Alanı */}
-      <PackageFilters
-        search={search}
-        setSearch={setSearch}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        cityFilter={cityFilter}
-        setCityFilter={setCityFilter}
-        uniqueCities={uniqueCities}
-      />
+      {/* Filtre Alanı */}
+      <Card className="p-4">
+        <PackageFilters
+          search={search}
+          setSearch={setSearch}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          cityFilter={cityFilter}
+          setCityFilter={setCityFilter}
+          uniqueCities={uniqueCities}
+        />
+      </Card>
 
       {/* Kargo Kartları */}
-      <Grid container spacing={2}>
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="center"
+        gap={2}
+      >
         {filteredPackages.map((pkg) => (
-          <Grid item xs={12} md={6} lg={4} key={pkg._id}>
+          <Box
+            key={pkg._id}
+            sx={{
+              width: "300px", // SABİT GENİŞLİK
+              flexShrink: 0,   // Daralmayı engelle
+            }}
+          >
             <PackageCard pkg={pkg} onEdit={handleEditClick} />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
 
 
-      {/* Modal */}
+      {/* Düzenleme Modali */}
       {selectedPackage && (
         <EditModal
           isOpen={isModalOpen}
           onClose={handleModalClose}
           pkg={selectedPackage}
           onUpdated={fetchPackages}
+        />
+      )}
+
+      {/* Yeni Kargo Ekleme Modali */}
+      {isAddModalOpen && (
+        <AddPackageModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onCreated={fetchPackages}
         />
       )}
     </Box>

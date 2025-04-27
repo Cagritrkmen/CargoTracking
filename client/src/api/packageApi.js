@@ -17,3 +17,8 @@ export const deletePackage = async (trackingNumber) => {
   const res = await axios.delete(`/packages/track/${trackingNumber}`);
   return res.data;
 };
+
+export const createPackage = async (newPackage) => {
+  const response = await axios.post("/packages", newPackage);
+  return response.data;
+};

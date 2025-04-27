@@ -23,5 +23,11 @@ export const statusOptions = {
       description: "Kargo başarıyla teslim edildi.",
         colorCode: "#10b981"
     },
+    "İptal Edildi": {
+      color: "success",
+      icon: "❌",
+      description: "Kargo iptal edildi.",
+        colorCode: "#EF4444"
+    },
   };
   

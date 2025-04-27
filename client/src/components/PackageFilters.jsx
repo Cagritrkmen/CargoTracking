@@ -36,6 +36,7 @@ const PackageFilters = ({
             <MenuItem value="Yola Çıktı">Yola Çıktı</MenuItem>
             <MenuItem value="Dağıtımda">Dağıtımda</MenuItem>
             <MenuItem value="Teslim Edildi">Teslim Edildi</MenuItem>
+            <MenuItem value="İptal Edildi">İptal Edildi</MenuItem>
           </Select>
         </FormControl>
       </Grid>

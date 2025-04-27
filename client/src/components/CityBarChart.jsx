@@ -16,13 +16,12 @@ const CityBarChart = ({ packages }) => {
   }));
 
   return (
-    <Card sx={{ mb: 4 }}>
+    <Card sx={{ width:"100%", mb: 4 }}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
           Şehre Göre Kargo Dağılımı
         </Typography>
-        <div style={{ width: "100%", height: 300 }}>
-          <ResponsiveContainer>
+        <ResponsiveContainer width="100%" height={350}>
             <BarChart data={data} layout="vertical" margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis type="number" />
@@ -32,7 +31,6 @@ const CityBarChart = ({ packages }) => {
               <Bar dataKey="count" fill="#8884d8" name="Kargo Sayısı" />
             </BarChart>
           </ResponsiveContainer>
-        </div>
       </CardContent>
     </Card>
   );

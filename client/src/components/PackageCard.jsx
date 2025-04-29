@@ -26,6 +26,8 @@ const PackageCard = ({ pkg, onEdit }) => {
   return (
     <Card
       sx={{
+        margin:"0",
+        padding:"20px",
         height: "100%",
         display: "flex",
         flexDirection: "column",

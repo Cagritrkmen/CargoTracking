@@ -89,12 +89,13 @@ const AdminDashboard = () => {
       {error && <Typography color="error">{error}</Typography>}
 
       {/* Genel İstatistikler */}
+
       {packages.length > 0 && (
         <GeneralStats packages={packages} />
       )}
 
       {/* Grafikler */}
-      <Box display="flex" justifyContent="space-between" gap={2} flexDirection={{ xs: "column", md: "row" }} >
+      <Box display="flex" justifyContent="space-between" gap={3} flexDirection={{ xs: "column", md: "row" }} >
         <Box flex="1" minWidth={300}>
           <StatusChart packages={packages} />
         </Box>
@@ -121,24 +122,28 @@ const AdminDashboard = () => {
       </Card>
 
       {/* Kargo Kartları */}
-      <Box
-        display="flex"
-        flexWrap="wrap"
-        justifyContent="center"
-        gap={2}
+      <Grid
+        container spacing={{ xs: 2, md: 3 }} columns={{ xs: 12, sm: 8, md: 12 }}  mb={4} justifyContent="flex-start"
       >
         {filteredPackages.map((pkg) => (
-          <Box
-            key={pkg._id}
+          <Grid
+           size={{ xs: 12, sm: 4, md: 3 }}
             sx={{
-              width: "300px", // SABİT GENİŞLİK
-              flexShrink: 0,   // Daralmayı engelle
+              width: "100%", px: 0,
+              
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 2,
+              py: 2,
+
             }}
+
           >
-            <PackageCard pkg={pkg} onEdit={handleEditClick} />
-          </Box>
+            <PackageCard  pkg={pkg} onEdit={handleEditClick} />
+          </Grid>
         ))}
-      </Box>
+      </Grid>
+
 
 
       {/* Düzenleme Modali */}

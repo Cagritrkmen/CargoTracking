@@ -24,6 +24,8 @@ const AdminDashboard = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("Tümü");
   const [cityFilter, setCityFilter] = useState("Tümü");
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   // Kargo verisi çekme
   const fetchPackages = async () => {
@@ -39,11 +41,21 @@ const AdminDashboard = () => {
     fetchPackages();
   }, []);
 
+  // Tüm filtreleri temizle
+  const handleClearFilters = () => {
+    setSearch("");
+    setStatusFilter("Tümü");
+    setCityFilter("Tümü");
+    setStartDate(null);
+    setEndDate(null);
+  };
+
   useEffect(() => {
     const result = packages.filter((pkg) => {
       const searchMatch =
         pkg.trackingNumber.toLowerCase().includes(search.toLowerCase()) ||
-        pkg.recipient?.toLowerCase().includes(search.toLowerCase());
+        pkg.recipient?.toLowerCase().includes(search.toLowerCase()) ||
+        pkg.sender?.toLowerCase().includes(search.toLowerCase());
 
       const statusMatch =
         statusFilter === "Tümü" || pkg.status === statusFilter;
@@ -51,11 +63,16 @@ const AdminDashboard = () => {
       const cityMatch =
         cityFilter === "Tümü" || pkg.currentLocation === cityFilter;
 
-      return searchMatch && statusMatch && cityMatch;
+      // Tarih kontrolü
+      const packageDate = new Date(pkg.createdAt);
+      const dateMatch = (!startDate || packageDate >= startDate) && 
+                       (!endDate || packageDate <= endDate);
+
+      return searchMatch && statusMatch && cityMatch && dateMatch;
     });
 
     setFilteredPackages(result);
-  }, [search, statusFilter, cityFilter, packages]);
+  }, [search, statusFilter, cityFilter, startDate, endDate, packages]);
 
   const handleEditClick = (pkg) => {
     setSelectedPackage(pkg);
@@ -89,7 +106,6 @@ const AdminDashboard = () => {
       {error && <Typography color="error">{error}</Typography>}
 
       {/* Genel İstatistikler */}
-
       {packages.length > 0 && (
         <GeneralStats packages={packages} />
       )}
@@ -107,7 +123,6 @@ const AdminDashboard = () => {
         </Box>
       </Box>
 
-
       {/* Filtre Alanı */}
       <Card className="p-4">
         <PackageFilters
@@ -118,6 +133,11 @@ const AdminDashboard = () => {
           cityFilter={cityFilter}
           setCityFilter={setCityFilter}
           uniqueCities={uniqueCities}
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          onClearFilters={handleClearFilters}
         />
       </Card>
 
@@ -130,21 +150,16 @@ const AdminDashboard = () => {
            size={{ xs: 12, sm: 4, md: 3 }}
             sx={{
               width: "100%", px: 0,
-              
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 2,
               py: 2,
-
             }}
-
           >
-            <PackageCard  pkg={pkg} onEdit={handleEditClick} />
+            <PackageCard pkg={pkg} onEdit={handleEditClick} />
           </Grid>
         ))}
       </Grid>
-
-
 
       {/* Düzenleme Modali */}
       {selectedPackage && (

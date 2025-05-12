@@ -20,9 +20,9 @@ const TrackingForm = () => {
   };
 
   return (
-    <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center text-center">
-      <h1 className="text-2xl font-bold mb-6 flex items-center gap-2">
-        <span>📦</span> Kargo Takip Sistemi
+    <div className="w-full max-w-xl bg-cyan-500 border-8 border-yellow-400 shadow-lg p-8 flex flex-col items-center text-center rounded-3xl">
+      <h1 className="text-2xl text-white font-bold mb-6 flex items-center gap-2">
+        <span>📦</span> GÖNDERİ TAKİBİ  
       </h1>
 
       <form onSubmit={handleSubmit} className="w-full flex gap-2 mb-4">

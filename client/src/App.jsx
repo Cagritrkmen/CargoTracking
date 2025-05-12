@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import TrackingForm from "./components/TrackingForm";
+import Home from "./components/Home";
 import AdminLogin from "./components/AdminLogin";
 import AdminDashboard from "./components/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -10,8 +10,8 @@ function App() {
     <div>
       <Router>
         <Routes>
-          {/* Kullanıcı sayfası */}
-          <Route path="/" element={<TrackingForm />} />
+          {/* Kullanıcı ana sayfası */}
+          <Route path="/" element={<Home />} />
 
           {/* Admin login */}
           <Route path="/admin" element={<AdminLogin />} />
@@ -29,7 +29,6 @@ function App() {
       </Router>
       <Toaster position="bottom-right" reverseOrder={false} />
     </div>
-
   );
 }
 

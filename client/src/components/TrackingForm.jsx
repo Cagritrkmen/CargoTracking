@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getPackageByTrackingNumber } from "../api/packageApi";
 
 const TrackingForm = () => {
   const [trackingNumber, setTrackingNumber] = useState("");
@@ -9,13 +10,11 @@ const TrackingForm = () => {
     e.preventDefault();
     setError("");
     try {
-      const res = await fetch(`http://localhost:5000/api/packages/${trackingNumber}`);
-      if (!res.ok) throw new Error("Kargo bulunamadı");
-      const data = await res.json();
+      const data = await getPackageByTrackingNumber(trackingNumber);
       setPackageInfo(data);
     } catch (err) {
       setPackageInfo(null);
-      setError(err.message);
+      setError(err.message || "Kargo bulunamadı");
     }
   };
 

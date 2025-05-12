@@ -22,3 +22,9 @@ export const createPackage = async (newPackage) => {
   const response = await axios.post("/packages", newPackage);
   return response.data;
 };
+
+// Takip numarası ile kargo sorgulama
+export const getPackageByTrackingNumber = async (trackingNumber) => {
+  const res = await axios.get(`/packages/${trackingNumber}`);
+  return res.data;
+};

@@ -1,5 +1,5 @@
 import React from "react";
-import TrackingForm from "./TrackingForm";
+import TrackingForm from "../components/TrackingForm";
 import { Card, Typography, Link, Box } from "@mui/material";
 import TwitterIcon from '@mui/icons-material/Twitter';
 import FacebookIcon from '@mui/icons-material/Facebook';

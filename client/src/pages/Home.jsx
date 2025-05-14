@@ -134,7 +134,7 @@ const Home = () => {
                 textShadow: '0 1px 4px #0002' 
               }}
             >
-              444 1 788
+              444 1 123
             </Typography>
           </Box>
         </Box>

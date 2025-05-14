@@ -56,10 +56,10 @@ const TrackingForm = ({ isModalOpen, setIsModalOpen }) => {
       {/* Modal Başlangıcı */}
       {isModalOpen && packageInfo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-2xl shadow-2xl p-2 sm:p-4 w-full max-w-md sm:max-w-2xl relative flex flex-col max-h-[95vh] overflow-y-auto justify-between">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-8 w-[99vw] max-w-xl sm:max-w-2xl md:max-w-3xl lg:max-w-4xl relative overflow-y-auto max-h-[95vh]">
             <button
               onClick={handleCloseModal}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl font-bold z-10"
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl font-bold"
               aria-label="Kapat"
               tabIndex="0"
             >
@@ -67,7 +67,7 @@ const TrackingForm = ({ isModalOpen, setIsModalOpen }) => {
             </button>
             <div className="flex-1 flex flex-col justify-start">
               {/* Kargo Durum Adımları */}
-              <div className="flex flex-wrap justify-center gap-2 sm:gap-4 md:gap-6 mb-4 mt-2">
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 mb-6 mt-2 text-base sm:text-lg">
                 {[
                   { label: "Hazırlanıyor", icon: HomeIcon, key: "Hazırlanıyor" },
                   { label: "Yola Çıktı", icon: LocalShippingIcon, key: "Yola Çıktı" },
@@ -83,13 +83,13 @@ const TrackingForm = ({ isModalOpen, setIsModalOpen }) => {
                     <div key={step.key} className="flex flex-col items-center min-w-[48px]">
                       <Icon className={
                         isActive
-                          ? (step.key === "İptal Edildi" ? "text-red-500" : "text-green-500")
-                          : "text-yellow-400"
-                      } fontSize="medium" />
+                          ? (step.key === "İptal Edildi" ? "text-yellow-400" : "text-green-500")
+                          : "text-gray-400"
+                      } fontSize="inherit" style={{ fontSize: '2.5rem' }} />
                       <span className={
                         isActive
-                          ? (step.key === "İptal Edildi" ? "text-[10px] font-bold mt-1 text-red-600" : "text-[10px] font-bold mt-1 text-green-600")
-                          : "text-[10px] font-semibold mt-1 text-gray-700"
+                          ? (step.key === "İptal Edildi" ? "text-base sm:text-lg font-bold mt-1 text-yellow-500" : "text-base sm:text-lg font-bold mt-1 text-green-600")
+                          : "text-base sm:text-lg font-semibold mt-1 text-gray-700"
                       }>
                         {step.label}
                       </span>
@@ -99,13 +99,13 @@ const TrackingForm = ({ isModalOpen, setIsModalOpen }) => {
               </div>
 
               {/* Takip No */}
-              <div className="text-center mb-2 text-xs sm:text-sm">
+              <div className="text-center mb-4 text-base sm:text-lg">
                 <span className="text-cyan-700 font-bold">TAKİP NO :</span>
                 <span className="ml-2 text-blue-700 font-mono tracking-wider select-all break-all">{packageInfo.trackingNumber}</span>
               </div>
 
               {/* Bilgi Kutuları */}
-              <div className="flex flex-col md:flex-row gap-2 sm:gap-4 mb-4 w-full">
+              <div className="flex flex-col md:flex-row gap-4 mb-6 w-full text-base sm:text-lg">
                 {/* Gönderici */}
                 <div className="flex-1 bg-cyan-100 rounded-xl p-2 sm:p-3 border-2 border-cyan-300 shadow-sm min-w-0">
                   <div className="text-xs text-cyan-700 font-semibold mb-1">ÇIKIŞ İL / İLÇE</div>
@@ -125,9 +125,9 @@ const TrackingForm = ({ isModalOpen, setIsModalOpen }) => {
               </div>
 
               {/* Kargo Geçmişi */}
-              <div className="mb-2 w-full">
-                <div className="text-center text-sm font-bold text-cyan-700 mb-1">Kargo Hareket Geçmişi</div>
-                <div className="max-h-32 sm:max-h-48 overflow-y-auto border p-2 rounded text-[11px] sm:text-xs bg-gray-50">
+              <div className="mb-6 w-full">
+                <div className="text-center text-base font-bold text-cyan-700 mb-2">Kargo Hareket Geçmişi</div>
+                <div className="max-h-48 overflow-y-auto border p-2 rounded text-sm sm:text-base bg-gray-50">
                   {packageInfo.history && packageInfo.history.length > 0 ? (
                     packageInfo.history.slice().reverse().map((h, i) => (
                       <div key={i} className="border-b pb-1 mb-1 flex flex-col sm:flex-row sm:items-center sm:gap-2">
@@ -145,7 +145,7 @@ const TrackingForm = ({ isModalOpen, setIsModalOpen }) => {
             {/* Sticky Footer */}
             <div className="sticky bottom-0 left-0 w-full bg-gradient-to-r from-yellow-400 via-yellow-200 to-blue-300 rounded-b-2xl flex flex-col items-center py-2 px-2 mt-2">
               <div className="flex items-center gap-2 mb-1">
-                <img src="/logo.png" alt="ÇağrıKargo" className="h-6" />
+                <img src="/logo.png" alt="ÇağrıKargo" className="h-10 sm:h-12 w-auto" />
               </div>
               <div className="flex flex-wrap justify-center items-center gap-2 text-[18px] mb-1">
                 <a href="#" className="text-cyan-700 hover:text-cyan-900"><i className="fab fa-twitter"></i></a>
@@ -158,7 +158,7 @@ const TrackingForm = ({ isModalOpen, setIsModalOpen }) => {
                 <span>|</span>
                 <span>cagri.gov.tr</span>
                 <span>|</span>
-                <span>444 1 788</span>
+                <span>444 1 123</span>
               </div>
             </div>
           </div>

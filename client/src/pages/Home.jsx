@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TrackingForm from "../components/TrackingForm";
 import { Card, Typography, Link, Box } from "@mui/material";
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -10,6 +10,7 @@ const footerBlue = '#2196f3';
 const footerYellow = '#FFD600';
 
 const Home = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <div className="relative min-h-screen flex flex-col overflow-hidden bg-gradient-to-br from-yellow-100 to-blue-100">
       {/* Tam ekran arka plan görseli */}
@@ -42,11 +43,12 @@ const Home = () => {
 
       {/* Ana İçerik Alanı */}
       <main className="relative z-20 flex-1 flex flex-col items-start justify-center gap-8 px-4 pb-8 md:pl-32">
-        <TrackingForm />
+        <TrackingForm isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
       </main>
 
       {/* Footer */}
-      <footer className="relative z-20 py-4 md:py-6 px-4 md:px-8 text-white" style={{ background: `linear-gradient(90deg, ${footerYellow} 70%, ${footerBlue} 100%)`, boxShadow: '0 -2px 16px 0 rgba(0,0,0,0.08)' }}>
+      <footer className={`relative z-20 py-4 md:py-6 px-4 md:px-8 text-white transition-all duration-300 ${isModalOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        style={{ background: `linear-gradient(90deg, ${footerYellow} 70%, ${footerBlue} 100%)`, boxShadow: '0 -2px 16px 0 rgba(0,0,0,0.08)' }}>
         <Box className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-8">
           {/* Logo */}
           <Box className="w-full md:w-auto flex justify-center md:justify-start">

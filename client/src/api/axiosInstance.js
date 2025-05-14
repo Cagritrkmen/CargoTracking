@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const instance = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -12,5 +13,16 @@ instance.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// 401 hatası için global toast
+instance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      toast.error("Oturum süresi doldu, lütfen tekrar giriş yapın.");
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default instance;

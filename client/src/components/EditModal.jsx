@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updatePackage } from "../api/packageApi";
+import { updatePackage, deletePackage } from "../api/packageApi";
 import TurkeyMap from "./TurkeyMap";
 import toast from "react-hot-toast";
 import { Chip, Tooltip } from "@mui/material";
@@ -54,6 +54,24 @@ const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
     } catch (err) {
       toast.error("İptal işlemi başarısız ❌");
       setError("İptal başarısız: " + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm("Bu kargoyu kalıcı olarak silmek istediğinize emin misiniz?");
+    if (!confirmDelete) return;
+    setError("");
+    setLoading(true);
+    try {
+      await deletePackage(pkg.trackingNumber);
+      toast.success("Kargo kalıcı olarak silindi ✅");
+      onUpdated();
+      onClose();
+    } catch (err) {
+      toast.error("Silme başarısız ❌");
+      setError("Silme başarısız: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -150,13 +168,19 @@ const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
             {/* Butonlar */}
             <div className="flex flex-wrap justify-end gap-2 pt-4">
               <button
+                onClick={handleDelete}
+                disabled={loading}
+                className="px-4 py-2 bg-red-700 text-white rounded hover:bg-red-800 order-first"
+              >
+                {loading ? "Siliniyor..." : "Kargoyu Sil"}
+              </button>
+              <button
                 onClick={handleCancelPackage}
                 disabled={loading}
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
               >
                 {loading ? "İşlem Yapılıyor..." : "Kargoyu İptal Et"}
               </button>
-
               <button
                 onClick={handleUpdate}
                 disabled={loading}
@@ -164,7 +188,6 @@ const EditModal = ({ isOpen, onClose, pkg, onUpdated }) => {
               >
                 {loading ? "Kaydediliyor..." : "Güncelle"}
               </button>
-
               <button
                 onClick={onClose}
                 className="px-4 py-2 border rounded hover:bg-gray-100"

@@ -3,6 +3,7 @@ import { createPackage } from "../api/packageApi"; // ➔ Bunu yazacağız
 import TurkeyMap from "./TurkeyMap";
 import toast from "react-hot-toast";
 import { statusOptions } from "../utils/statusOptions";
+import AddIcon from '@mui/icons-material/Add';
 
 const AddPackageModal = ({ isOpen, onClose, onCreated }) => {
   const [sender, setSender] = useState("");
@@ -50,76 +51,82 @@ const AddPackageModal = ({ isOpen, onClose, onCreated }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 overflow-auto">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[95%] max-w-6xl space-y-6 max-h-[90vh] overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4 text-center">➕ Yeni Kargo Ekle</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* SOL FORM */}
-          <div className="space-y-4">
-
-            {/* Gönderen */}
-            <div>
-              <label className="block text-sm font-semibold">Gönderen</label>
-              <input
-                type="text"
-                value={sender}
-                onChange={(e) => setSender(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-
-            {/* Alıcı */}
-            <div>
-              <label className="block text-sm font-semibold">Alıcı</label>
-              <input
-                type="text"
-                value={recipient}
-                onChange={(e) => setRecipient(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-
-            {/* Durum */}
-            <div>
-              <label className="block text-sm font-semibold">Durum</label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-                className="w-full px-3 py-2 border rounded"
-              >
-                {["Hazırlanıyor", "Yola Çıktı", "Dağıtımda", "Teslim Edildi"].map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Butonlar */}
-            <div className="flex justify-end gap-2 pt-4">
-              <button
-                onClick={handleCreate}
-                disabled={loading}
-                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-              >
-                {loading ? "Ekleniyor..." : "Kargoyu Ekle"}
-              </button>
-              <button
-                onClick={onClose}
-                className="px-4 py-2 border rounded hover:bg-gray-100"
-              >
-                Vazgeç
-              </button>
-            </div>
+      <div className="bg-gradient-to-br from-yellow-100 to-blue-100 p-1 rounded-2xl shadow-2xl w-[99vw] max-w-3xl md:!max-w-3xl lg:!max-w-6xl sm:!max-w-2xl max-h-[97vh] overflow-y-auto">
+        <div className="bg-white rounded-2xl p-2 sm:p-6 md:p-10 space-y-6">
+          {/* Başlık */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-2">
+            <img src="/logo.png" alt="ÇağrıKargo" className="h-10 w-auto" />
+            <span className="text-cyan-900 font-bold text-xl sm:text-2xl tracking-tight flex items-center gap-2">
+              Yeni Kargo Ekle
+            </span>
           </div>
 
-          {/* SAĞ FORM - Harita */}
-          <div>
-            <TurkeyMap
-              selectedCity={currentLocation}
-              onSelectCity={(city) => setCurrentLocation(city)}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 items-start">
+            {/* SOL FORM */}
+            <div className="space-y-4 flex flex-col h-full justify-between">
+              {/* Gönderen */}
+              <div>
+                <label className="block text-xs font-semibold text-cyan-800 mb-1">Gönderen</label>
+                <input
+                  type="text"
+                  value={sender}
+                  onChange={(e) => setSender(e.target.value)}
+                  className="w-full px-4 py-2 border border-cyan-200 rounded-xl focus:ring-2 focus:ring-yellow-400 outline-none bg-cyan-50 text-cyan-900"
+                  placeholder="Gönderen adı"
+                />
+              </div>
+              {/* Alıcı */}
+              <div>
+                <label className="block text-xs font-semibold text-cyan-800 mb-1">Alıcı</label>
+                <input
+                  type="text"
+                  value={recipient}
+                  onChange={(e) => setRecipient(e.target.value)}
+                  className="w-full px-4 py-2 border border-cyan-200 rounded-xl focus:ring-2 focus:ring-yellow-400 outline-none bg-cyan-50 text-cyan-900"
+                  placeholder="Alıcı adı"
+                />
+              </div>
+              {/* Durum */}
+              <div>
+                <label className="block text-xs font-semibold text-cyan-800 mb-1">Durum</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="w-full px-4 py-2 border border-cyan-200 rounded-xl focus:ring-2 focus:ring-yellow-400 outline-none bg-cyan-50 text-cyan-900"
+                >
+                  {["Hazırlanıyor", "Yola Çıktı", "Dağıtımda", "Teslim Edildi"].map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+              {/* Butonlar */}
+              <div className="flex flex-col sm:flex-row justify-start gap-2 pt-2 w-full mt-2">
+                <button
+                  onClick={handleCreate}
+                  disabled={loading}
+                  className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-400 to-blue-500 text-white font-bold rounded-xl shadow hover:from-yellow-300 hover:to-blue-700 transition-all duration-150 text-base max-w"
+                >
+                  {loading ? "Ekleniyor..." : "Kargoyu Ekle"}
+                </button>
+                <button
+                  onClick={onClose}
+                  className="flex-1 px-4 py-2 border border-cyan-300 rounded-xl text-cyan-700 font-semibold bg-white hover:bg-cyan-50 transition-all duration-150 text-base max-w"
+                >
+                  Vazgeç
+                </button>
+              </div>
+            </div>
+            {/* SAĞ FORM - Harita */}
+            <div className="w-full overflow-x-auto flex justify-center items-center">
+              <div className="min-w-[380px] md:min-w-[480px] max-w-full">
+                <TurkeyMap
+                  selectedCity={currentLocation}
+                  onSelectCity={(city) => setCurrentLocation(city)}
+                />
+              </div>
+            </div>
           </div>
+         
         </div>
       </div>
     </div>

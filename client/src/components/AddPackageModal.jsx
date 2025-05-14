@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPackage } from "../api/packageApi"; // ➔ Bunu yazacağız
+import { createPackage } from "../api/packageApi";
 import TurkeyMap from "./TurkeyMap";
 import toast from "react-hot-toast";
 import { statusOptions } from "../utils/statusOptions";

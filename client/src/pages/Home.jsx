@@ -58,7 +58,7 @@ const Home = () => {
           {/* Sosyal Medya */}
           <Box className="w-full md:w-auto flex flex-col md:flex-row justify-center gap-4 md:gap-8 items-center">
             <Link 
-              href="https://twitter.com/CagriKargo" 
+              href="https://www.linkedin.com/in/cagriturkmenn/" 
               target="_blank" 
               rel="noopener" 
               underline="hover" 
@@ -74,7 +74,7 @@ const Home = () => {
               <TwitterIcon sx={{ fontSize: { xs: 20, sm: 24, md: 28 } }} />@CagriKargo
             </Link>
             <Link 
-              href="https://www.facebook.com/CagriKargo" 
+              href="https://www.linkedin.com/in/cagriturkmenn/" 
               target="_blank" 
               rel="noopener" 
               underline="hover" 
@@ -90,7 +90,7 @@ const Home = () => {
               <FacebookIcon sx={{ fontSize: { xs: 20, sm: 24, md: 28 } }} />/CagriKargo
             </Link>
             <Link 
-              href="https://www.instagram.com/CagriKargo/" 
+              href="https://www.linkedin.com/in/cagriturkmenn/" 
               target="_blank" 
               rel="noopener" 
               underline="hover" 
@@ -106,7 +106,7 @@ const Home = () => {
               <InstagramIcon sx={{ fontSize: { xs: 20, sm: 24, md: 28 } }} />@CagriKargo
             </Link>
             <Link 
-              href="https://www.cagri.gov.tr" 
+              href="https://www.linkedin.com/in/cagriturkmenn/" 
               target="_blank" 
               rel="noopener" 
               underline="hover" 
